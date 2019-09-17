@@ -1,5 +1,5 @@
 #!/bin/bash -x
-echo "Setting up VM NAT network"
+echo "Setting up the NAT network"
 vboxmanage () { VboxManage.exe "$@"; }
 vboxmanage natnetwork add --netname net_4640 --network "192.168.250.0/24" --enable --dhcp off --ipv6 off
 vboxmanage natnetwork modify --netname net_4640 --port-forward-4 "ssh:tcp:[]:50022:[192.168.250.10]:22"

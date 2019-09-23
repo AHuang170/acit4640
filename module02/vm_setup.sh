@@ -1,4 +1,6 @@
 #!/bin/bash -x
+set -u
+
 echo "Starting the VM setup"
 
 vboxmanage () { VboxManage.exe "$@"; }

@@ -26,7 +26,7 @@ firewall-cmd --zone=public --add-service=ssh
 firewall-cmd --zone=public --add-port=80/tcp
 firewall-cmd --zone=public --add-port=443/tcp
 firewall-cmd --zone=public --add-port=22/tcp
-firewall-cmd--runtime-to-permanent
+firewall-cmd --runtime-to-permanent
 
 echo "Disabling SELinux"
 setenforce 0
@@ -56,6 +56,7 @@ npm install
 mv /home/todo-app/database.js /home/todo-app/app/config/database.js
 "
 cd ~
+chmod -R 755 /home/todo-app
 
 #Production application setup
 echo "Installing nginx"

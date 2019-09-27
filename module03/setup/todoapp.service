@@ -1,4 +1,4 @@
-[UNIT]
+[Unit]
 Description=Todo app, ACIT4640
 After=network.target
 

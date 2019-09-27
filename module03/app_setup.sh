@@ -49,11 +49,10 @@ echo "Setup Packages"
 cp ~/setup/database.js /home/todo-app/database.js
 cd /home/todo-app
 sudo -u todo-app -H sh -c "
-mkdir app;
-cd app;
-git clone https://github.com/timoguic/ACIT4640-todo-app.git .
-npm install
-mv /home/todo-app/database.js /home/todo-app/app/config/database.js
+mkdir /home/todo-app/app;
+git clone https://github.com/timoguic/ACIT4640-todo-app.git /home/todo-app/app;
+npm install;
+mv /home/todo-app/database.js /home/todo-app/app/config/database.js;
 "
 cd ~
 chmod -R 755 /home/todo-app

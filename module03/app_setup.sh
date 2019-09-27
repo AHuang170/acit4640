@@ -83,8 +83,7 @@ create_todoapp_daemon(){
 	echo"Configuring deamon"
 	cp ~/setup/todoapp.service /lib/systemd/system/todoapp.service
 	systemctl daemon-reload
-	systemctl enable todoapp
-	systemctl start todoapp
+	systemctl enable todoapp && systemctl start todoapp
 }
 
 set -u

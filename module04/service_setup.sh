@@ -1,10 +1,13 @@
 #!/bin/bash -x
+
+#Script to be ran at the root directory ~, assumes directory /setup to be in the root diretory as well.
+#VM .vdi file to be created at windows directory D:/VM_Folder
+
 set -u
 
 VM_NAME="VM_ACIT4640"
 
 vboxmanage () { /mnt/c/Program\ Files/Oracle/VirtualBox/VboxManage.exe "$@";}
-#vboxmanage () { VboxManage.exe "$@"; }
 
 setup_host_network () {
 	echo "Setting up the NAT network."
@@ -35,7 +38,7 @@ setup_system () {
 }
 
 start_pxe_server () {
-	#Assumption: Based on given description, the PXE server VM is already imported from the .ova file as the VM named PXE_4640
+	#Assumption: Based on given description, the PXE server VM is already imported from the .ova file as the VM named PXE_4640, starts off not powered on
 
 	PXE_NAME="PXE_4640"
 	SETUP_DIR="./setup"

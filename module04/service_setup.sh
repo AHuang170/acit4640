@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-#Script to be ran at the root directory ~, assumes directory /setup to be in the root diretory as well.
+#Script to be ran at the user's home directory ~, assumes directory /setup to be in the root diretory as well.
 #VM .vdi file to be created at windows directory D:/VM_Folder
 
 set -u
@@ -43,13 +43,15 @@ start_pxe_server () {
 	PXE_NAME="PXE_4640"
 	SETUP_DIR="./setup"
 
+	chmod 600 ~/setup/acit_admin_id_rsa
+
 	vboxmanage modifyvm $PXE_NAME --nic1 natnetwork --nat-network1 net_4640
 	vboxmanage startvm $PXE_NAME --type headless
 
 	echo "Waiting for PXE server to finish booting..."
 
 	while /bin/true; do
-        	ssh -i ~/.ssh/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost exit
+        	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost exit
         	if [ $? -ne 0 ]; then
 			sleep 2s
         	else
@@ -64,10 +66,11 @@ send_kickstart_file () {
 
 	echo "Sending kickstart and configuration files"
 
-	scp -r -P 50222 -i ~/.ssh/acit_admin_id_rsa ~/setup admin@localhost:/home/admin/
-	ssh -i ~/.ssh/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostkeyChecking=no -q admin@localhost "sudo chmod 755 /home/admin/setup/ks.cfg"
-	ssh -i ~/.ssh/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup/ks.cfg /var/www/lighttpd/ks.cfg"
-	ssh -i ~/.ssh/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup /var/www/lighttpd/setup"
+	scp -r -P 50222 -i ~/setup/acit_admin_id_rsa ~/setup admin@localhost:/home/admin/
+	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostkeyChecking=no -q admin@localhost "sudo chmod 755 /home/admin/setup/ks.cfg"
+	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup/ks.cfg /var/www/lighttpd/ks.cfg"
+	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo rm /home/admin/setup/acit_admin_id_rsa"
+	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup /var/www/lighttpd/setup"
 
 }
 

@@ -22,28 +22,28 @@ setup_host_network () {
 
 setup_system () {
 	echo "Creating new VM"
-	VM_FOLDER="D:/VM_Folder"
+	VM_FOLDER="C:/VM_Folder"
 	vboxmanage createvm --name $VM_NAME --ostype "RedHat_64" --register --basefolder $VM_FOLDER
-	#SED_PROGRAM="/^Config file:/ { s/^.*:\s\+\(\S\+\)/\1/; s|\\\\|/|gp }"
-	#VBOX_FILE=$(vbmg showvminfo "$VM_NAME" | sed -ne "$SED_PROGRAM")
-	#VM_DIR=$(dirname "$VBOX_FILE")
+	SED_PROGRAM="/^Config file:/ { s/^.*:\s\+\(\S\+\)/\1/; s|\\\\|/|gp }"
+	VBOX_FILE=$(vboxmanage showvminfo "$VM_NAME" | sed -ne "$SED_PROGRAM")
+	VM_DIR=$(dirname "$VBOX_FILE")
 	VM_PATH="${VM_FOLDER}/${VM_NAME}"
-	vboxmanage createhd --filename $VM_PATH.vdi --size 10240
-	vboxmanage storagectl $VM_NAME --name "SATA Controller" --add sata --controller IntelAHCI
+	vboxmanage createmedium --filename $VM_PATH.vdi --size 10240 --format VDI
+	vboxmanage storagectl $VM_NAME --name "SATA Controller" --add SATA --controller IntelAHCI
 	vboxmanage storageattach $VM_NAME --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium $VM_PATH.vdi
-	#vboxmanage storagectl $VM_NAME --name "IDE Controller" --add ide
-	#vboxmanage storageattach $VM_NAME --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium /Users/Aldrich/Desktop/ACIT_4640/ISO/CentOS-7-x86_64-Minimal-1810.iso
+	#Not attaching ISO file as we are installing OS from PXE serve
 	vboxmanage modifyvm $VM_NAME --cpus 1 --memory 2048 --audio none --nic1 natnetwork --nat-network1 net_4640 --boot1 disk --boot2 net
 	echo "VM created."
 }
 
 start_pxe_server () {
 	#Assumption: Based on given description, the PXE server VM is already imported from the .ova file as the VM named PXE_4640, starts off not powered on
+	#Assumption: This script and the resource directory /setup will be in the same directory as well
 
 	PXE_NAME="PXE_4640"
 	SETUP_DIR="./setup"
 
-	chmod 600 ~/setup/acit_admin_id_rsa
+	chmod 600 $SETUP_DIR/acit_admin_id_rsa
 
 	vboxmanage modifyvm $PXE_NAME --nic1 natnetwork --nat-network1 net_4640
 	vboxmanage startvm $PXE_NAME --type headless
@@ -51,7 +51,7 @@ start_pxe_server () {
 	echo "Waiting for PXE server to finish booting..."
 
 	while /bin/true; do
-        	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost exit
+        	ssh -i $SETUP_DIR/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost exit
         	if [ $? -ne 0 ]; then
 			sleep 2s
         	else
@@ -66,12 +66,11 @@ send_kickstart_file () {
 
 	echo "Sending kickstart and configuration files"
 
-	scp -r -P 50222 -i ~/setup/acit_admin_id_rsa ~/setup admin@localhost:/home/admin/
-	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostkeyChecking=no -q admin@localhost "sudo chmod 755 /home/admin/setup/ks.cfg"
-	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup/ks.cfg /var/www/lighttpd/ks.cfg"
-	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo rm /home/admin/setup/acit_admin_id_rsa"
-	ssh -i ~/setup/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup /var/www/lighttpd/setup"
-
+	scp -r -P 50222 -i $SETUP_DIR/acit_admin_id_rsa $SETUP_DIR admin@localhost:/home/admin/
+	ssh -i $SETUP_DIR/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostkeyChecking=no -q admin@localhost "sudo chmod 755 /home/admin/setup/ks.cfg"
+	ssh -i $SETUP_DIR/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup/ks.cfg /var/www/lighttpd/ks.cfg"
+	ssh -i $SETUP_DIR/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo rm /home/admin/setup/acit_admin_id_rsa"
+	ssh -i $SETUP_DIR/acit_admin_id_rsa -p 50222 -o ConnectTimeout=2s -o StrictHostKeyChecking=no -q admin@localhost "sudo mv /home/admin/setup /var/www/lighttpd/setup"
 }
 
 echo "Installing new VM."

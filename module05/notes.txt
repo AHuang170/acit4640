@@ -1,0 +1,2 @@
+packer validate <.json file>
+packer build <.json file>

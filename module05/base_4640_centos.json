@@ -1,12 +1,12 @@
 {
     "description": "Packer basebox for 4640",
     "variables": {
-        "admin_passwd": "blah",
+        "admin_passwd": "P@ssw0rd",
         "root_passwd": "blahroot",
         "admin_user": "admin",
         "initial_admin_passwd": "temporary",
-        "authorized_keys": "./files/admin_id_rsa.pub",
-        "iso_url": "./isos/CentOS-7-x86_64-Minimal-1810.iso",
+        "authorized_keys": "./files/acit_admin_id_rsa.pub",
+        "iso_url": "./isos/CentOS-7-x86_64-Minimal-1908.iso",
         "iso_checksum_url": "./isos/shasum.txt",
         "iso_checksum_type": "sha256",
         "http_directory": "./files/http",
@@ -26,7 +26,7 @@
             "ssh_password": "{{ user `initial_admin_passwd` }}",
             "ssh_timeout": "20m",
             "boot_command": [
-                "<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+                "<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait><wait><wait><wait><wait><enter>"
             ],
             "format": "ova",
             "guest_os_type": "RedHat_64",
@@ -50,13 +50,20 @@
             "type": "shell",
             "inline": [
                 "echo \"{{ user `admin_passwd` }}\" | sudo passwd --stdin {{ user `admin_user` }}",
-                "echo \"{{ user `root_passwd` }}\" | sudo passwd --stdin root"
+                "echo \"{{ user `root_passwd` }}\" | sudo passwd --stdin root",
+                "mkdir /home/{{ user `admin_user` }}/.ssh"
             ]
         },
         {
             "type": "file",
             "source": "{{ user `authorized_keys` }}",
             "destination": "/home/{{ user `admin_user` }}/.ssh/authorized_keys"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sudo chmod -R 400 /home/{{ user `admin_user` }}/.ssh"
+            ]
         }
     ]
 }

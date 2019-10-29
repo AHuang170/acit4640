@@ -1,1 +1,3 @@
 *.iso
+*.ova
+./module05/packer_cache/*

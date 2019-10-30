@@ -1,3 +1,4 @@
 *.iso
 *.ova
 **/packer_cache/*
+**/output/*

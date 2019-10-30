@@ -2,7 +2,7 @@
     "description": "Packer basebox for 4640",
     "variables": {
         "admin_passwd": "P@ssw0rd",
-        "root_passwd": "blahroot",
+        "root_passwd": "P@ssw0rd",
         "admin_user": "admin",
         "initial_admin_passwd": "temporary",
         "authorized_keys": "./files/acit_admin_id_rsa.pub",
@@ -51,7 +51,8 @@
             "inline": [
                 "echo \"{{ user `admin_passwd` }}\" | sudo passwd --stdin {{ user `admin_user` }}",
                 "echo \"{{ user `root_passwd` }}\" | sudo passwd --stdin root",
-                "mkdir /home/{{ user `admin_user` }}/.ssh"
+                "mkdir /home/{{ user `admin_user` }}/.ssh",
+                "sudo chmod 700 /home/{{ user `admin_user` }}/.ssh"
             ]
         },
         {
@@ -62,7 +63,7 @@
         {
             "type": "shell",
             "inline": [
-                "sudo chmod -R 600 /home/{{ user `admin_user` }}/.ssh"
+                "sudo chmod -R 644 /home/{{ user `admin_user` }}/.ssh/authorized_keys"
             ]
         }
     ]

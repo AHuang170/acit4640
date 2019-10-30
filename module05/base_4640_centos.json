@@ -62,7 +62,7 @@
         {
             "type": "shell",
             "inline": [
-                "sudo chmod -R 400 /home/{{ user `admin_user` }}/.ssh"
+                "sudo chmod -R 600 /home/{{ user `admin_user` }}/.ssh"
             ]
         }
     ]

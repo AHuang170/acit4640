@@ -2,3 +2,4 @@
 *.ova
 **/packer_cache/*
 **/output/*
+**/shasum.txt

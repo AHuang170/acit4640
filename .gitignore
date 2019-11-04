@@ -4,3 +4,5 @@
 **/output/*
 **/shasum.txt
 **/packer/*
+*.box
+**/.vagrant/*

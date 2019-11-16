@@ -1,5 +1,6 @@
 *.iso
 *.ova
+*.retry
 **/packer_cache/*
 **/output/*
 **/shasum.txt

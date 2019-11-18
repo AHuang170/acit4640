@@ -1,10 +1,10 @@
 ---
 - hosts: todoapp
   tasks:
-    - name: Include the role 'base'
+    - name: Use role 'base' for system configuration
       include_role:
         name: base
-    - name: Include the role 'todoapp'
+    - name: Use role 'todoapp' to setup todoapp user and service
       include_role:
         name: todoapp
 

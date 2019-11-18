@@ -1,13 +1,13 @@
 ---
-- name: Use role 'no_selinux'
+- name: Use role 'no_selinux' to disable selinux
   include_role:
     name: no_selinux
-- name: Use role 'nginx'
+- name: Use role 'nginx' to install and configure nginx
   include_role:
     name: nginx
-- name: Use role 'nodejs'
+- name: Use role 'nodejs'to install nodejs
   include_role:
     name: nodejs
-- name: Use role 'mongo_server'
+- name: Use role 'mongo_server' to install and configure mongodb-server
   include_role:
     name: mongo_server

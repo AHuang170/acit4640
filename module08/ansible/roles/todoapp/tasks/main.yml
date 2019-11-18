@@ -18,12 +18,12 @@
   become: yes
   npm:
     path: "/home/{{todoapp_user_name}}/app"
-- name: Using database.js template
+- name: Move modified database.js file to server using template
   become: yes
   template:
     src: database.j2
     dest: "/home/{{todoapp_user_name}}/app/config/database.js"
-- name: Apply permissions
+- name: Apply permission for service user
   become: yes
   file:
     path: "/home/{{todoapp_user_name}}"
@@ -32,7 +32,7 @@
     mode: '0755'
     owner: "{{todoapp_user_name}}"
     group: "{{todoapp_user_name}}"
-- name: Move todoapp.service file with template
+- name: Move todoapp.service file to server with template
   become: yes
   template:
     src: todoapp_service.j2
@@ -41,7 +41,7 @@
   become: yes
   systemd:
     daemon_reload: yes
-- name: Enable and start todoapp
+- name: Enable and start todoapp service
   become: yes
   service:
     name: todoapp

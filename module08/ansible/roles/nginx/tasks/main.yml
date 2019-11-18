@@ -15,20 +15,12 @@
     permanent: yes
     state: enabled
     immediate: yes
-- name: Open ssh port
-  become: yes
-  firewalld:
-    service: ssh
-    zone: public
-    permanent: yes
-    state: enabled
-    immediate: yes
 - name: Install nginx
   become: yes
   package:
     name: nginx
     state: installed
-- name: Copy nginx config file with template
+- name: Move modified nginx config file to server with template
   become: yes
   template:
     src: nginx_conf.j2

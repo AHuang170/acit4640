@@ -1,0 +1,13 @@
+---
+- name: Use role 'no_selinux'
+  include_role:
+    name: no_selinux
+- name: Use role 'nginx'
+  include_role:
+    name: nginx
+- name: Use role 'nodejs'
+  include_role:
+    name: nodejs
+- name: Use role 'mongo_server'
+  include_role:
+    name: mongo_server

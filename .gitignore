@@ -1,5 +1,6 @@
 *.iso
 *.ova
+*.bak
 *.retry
 **/packer_cache/*
 **/output/*

@@ -1,5 +1,5 @@
 ---
-- name: Open http port
+- name: Open http port on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   firewalld:
     service: http
@@ -7,7 +7,7 @@
     permanent: yes
     state: enabled
     immediate: yes
-- name: Open https port
+- name: Open https port on VM PROVISIONED FROM VAGRANT BOX ansible_4640 (though it's not required)
   become: yes
   firewalld:
     service: https
@@ -15,23 +15,23 @@
     permanent: yes
     state: enabled
     immediate: yes
-- name: Install nginx
+- name: Install nginx onto VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   package:
     name: nginx
     state: installed
-- name: Move modified nginx config file to server with template
+- name: Move modified nginx config file to server with template for VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   template:
     src: nginx_conf.j2
     dest: /etc/nginx/nginx.conf
-- name: Set nginx config file ownership
+- name: Set nginx config file ownership on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   file:
     path: /etc/nginx/nginx.conf
     owner: nginx
     group: nginx
-- name: Reload nginx configuration file
+- name: Reload nginx configuration file of VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   service:
     name: nginx

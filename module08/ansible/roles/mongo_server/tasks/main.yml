@@ -1,10 +1,10 @@
 ---
-- name: Install MongoDB server
+- name: Install MongoDB server onto VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   package:
     name: mongodb-server
     state: installed
-- name: Enable and start MongoDB server
+- name: Enable and start MongoDB server on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   service:
     name: mongod

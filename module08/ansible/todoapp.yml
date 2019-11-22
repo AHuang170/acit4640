@@ -1,10 +1,10 @@
 ---
 - hosts: todoapp
   tasks:
-    - name: Use role 'base' for system configuration
+    - name: Use role 'base' for system configuration of VM PROVISIONED FROM VAGRANT BOX ansible_4640
       include_role:
         name: base
-    - name: Use role 'todoapp' to setup todoapp user and service
+    - name: Use role 'todoapp' to setup todoapp user and service in VM PROVISIONED FROM VAGRANT BOX ansible_4640 
       include_role:
         name: todoapp
 

@@ -1,29 +1,29 @@
 ---   
-- name: Create todoapp user
+- name: Create todoapp user in VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   user:
     name: "{{todoapp_user_name}}"
     password: "{{todoapp_user_password}}"
-- name: Install git
+- name: Install git onto VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   package:
       name: git
       state: installed
-- name: Clone git 
+- name: Clone git repository into VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   git:
     repo: "{{web_app_repository}}"
     dest: "/home/{{todoapp_user_name}}/app"
-- name: Run npm install
+- name: Run npm install in VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   npm:
     path: "/home/{{todoapp_user_name}}/app"
-- name: Move modified database.js file to server using template
+- name: Move modified database.js file to server using template onto VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   template:
     src: database.j2
     dest: "/home/{{todoapp_user_name}}/app/config/database.js"
-- name: Apply permission for service user
+- name: Apply permission for todo-app user home directory in VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   file:
     path: "/home/{{todoapp_user_name}}"
@@ -32,16 +32,16 @@
     mode: '0755'
     owner: "{{todoapp_user_name}}"
     group: "{{todoapp_user_name}}"
-- name: Move todoapp.service file to server with template
+- name: Move todoapp.service file to server using template onto VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   template:
     src: todoapp_service.j2
     dest: /lib/systemd/system/todoapp.service
-- name: Reload daemons
+- name: Reload daemons of VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   systemd:
     daemon_reload: yes
-- name: Enable and start todoapp service
+- name: Enable and start todoapp service on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   service:
     name: todoapp

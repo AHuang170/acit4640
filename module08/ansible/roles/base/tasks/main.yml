@@ -1,13 +1,13 @@
 ---
-- name: Use role 'no_selinux' to disable selinux
+- name: Use role 'no_selinux' to disable selinux on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   include_role:
     name: no_selinux
-- name: Use role 'nginx' to install and configure nginx
+- name: Use role 'nginx' to install and configure nginx on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   include_role:
     name: nginx
-- name: Use role 'nodejs'to install nodejs
+- name: Use role 'nodejs'to install nodejs on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   include_role:
     name: nodejs
-- name: Use role 'mongo_server' to install and configure mongodb-server
+- name: Use role 'mongo_server' to install and configure mongodb-server on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   include_role:
     name: mongo_server

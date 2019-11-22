@@ -1,5 +1,5 @@
 ---
-- name: Disable SELinux
+- name: Disable SELinux on VM PROVISIONED FROM VAGRANT BOX ansible_4640
   become: yes
   selinux:
     state: disabled
